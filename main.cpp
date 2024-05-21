@@ -7,12 +7,12 @@
 #include <cstdlib>
 
 
-#define RESET   "\033[0m"
-#define RED     "\033[91m"      /* Red*/
-#define GREEN   "\033[32m"      /* Green */
-#define YELLOW  "\033[33m"      /* Yellow */
-#define BLUE    "\x1b[96m"      /* Blue */
-
+#define RESET   "\x1b[0m"
+#define RED     "\x1b[91m"
+#define GREEN   "\x1b[92m"
+#define YELLOW  "\x1b[38;5;227m"
+#define BLUE    "\x1b[96m"
+#define PINK    "\x1b[38;5;201m"
 
 #ifdef _WIN32
     #define CLEAR_SCREEN "cls"
@@ -40,8 +40,16 @@ public:
     }
     string winner;
     void draw_board(){
+        #ifdef _WIN32
+        Color(11);
         cout << "   TIC-TAC-TOE" << endl;
+        Color(14);
         cout << "-*-*-*-*-*-*-*-*-" << endl;
+        #else
+        cout << BLUE << "   TIC-TAC-TOE" << RESET << endl;
+        cout << YELLOW << "-*-*-*-*-*-*-*-*-" << RESET << endl;
+        #endif
+
         for(int i = 0; i < 3; i++){
             #ifdef _WIN32
                Color(15);
@@ -88,7 +96,7 @@ public:
 
             cout << endl;
             if(i == 0 || i == 1){
-                cout << "_________________" << endl;
+                cout << "  ____|___|____  " << endl;
             }
         }
     }
@@ -159,8 +167,29 @@ int main(){
             system(CLEAR_SCREEN);
             game.draw_board();
             cout << endl << endl;
-            cout << "Player " << game.winner << " has won!" << endl << endl;
-            cout << "Press any key to quit...";
+            #ifdef _WIN32
+               Color(10);
+               cout << "Player ";
+               if(game.winner == " X ")
+                  Color(12);
+               else
+                  Color(11);
+               cout << game.winner ;
+               Color(10);
+               cout<< " has won!" << endl << endl;
+               Color(14);
+               cout << "Press any key to quit...";
+            #else
+             cout << GREEN << "Player " << RESET;
+             if(game.winner == " X ")
+                  cout << RED;
+               else
+                 cout << BLUE;
+                 cout << game.winner << RESET;
+                 cout<< GREEN << " has won!" << RESET << endl << endl;
+                 cout << YELLOW << "Press any key to quit..." << RESET;
+            #endif
+
             getch();
             break;
         }
@@ -170,9 +199,37 @@ int main(){
         (i % 2 == 0) ? player = "X" : player = "O";
 
         cout << endl << endl;
-        cout << "Turn of: " << player << endl << endl;
+        #ifdef _WIN32
+         Color(13);
+         cout << "Turn of: ";
+         if(player == "X"){
+             Color(12);
+            cout << player << endl << endl;
+         }
+         else{
+             Color(11);
+            cout << player << endl << endl;
+         }
+         Color(15);
+        #else
+        cout << PINK << "Turn of: " << RESET;
+        if(player == "X"){
+            cout << RED << player << RESET << endl << endl;
+         }
+         else{
+            cout << BLUE << player << RESET << endl << endl;
+         }
 
-        cout << prompt;
+        #endif
+
+
+        #ifdef _WIN32
+         Color(14);
+         cout << prompt;
+         Color(15);
+        #else
+        cout << YELLOW << prompt << RESET;
+        #endif
          if (!(cin >> grid)) {
             system(CLEAR_SCREEN);
             cin.clear();
@@ -198,8 +255,15 @@ int main(){
       system(CLEAR_SCREEN);
       game.draw_board();
       cout << endl << endl;
-      cout << "Game draw!" << endl << endl;
-      cout << "Press any key to quit...";
+      #ifdef _WIN32
+         Color(13);
+         cout << "Game draw!" << endl << endl;
+         Color(14);
+         cout << "Press any key to quit...";
+      #else
+         cout << PINK << "Game draw!" << RESET << endl << endl;
+      #endif
+
       getch();
     }
 
