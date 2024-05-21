@@ -262,6 +262,7 @@ int main(){
          cout << "Press any key to quit...";
       #else
          cout << PINK << "Game draw!" << RESET << endl << endl;
+         cout << YELLOW << "Press any key to quit..." << RESET;
       #endif
 
       getch();
